@@ -125,13 +125,20 @@ class TestUserService(BaseTestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(data["data"]["users"]), 2)
             self.assertIn("rennan", data["data"]["users"][0]["username"])
-            self.assertIn("rennan@almeida.teste", data["data"]["users"][0]["email"])
+            self.assertIn(
+                "rennan@almeida.teste", data["data"]["users"][0]["email"]
+            )
             self.assertIn("paulo", data["data"]["users"][1]["username"])
-            self.assertIn("paulo@notreal.teste", data["data"]["users"][1]["email"])
+            self.assertIn(
+                "paulo@notreal.teste", data["data"]["users"][1]["email"]
+            )
             self.assertIn("success", data["status"])
 
     def test_main_no_users(self):
-        """Ensure the main route behaves correctly when no users have been added to the database."""
+        """
+        Ensure the main route behaves correctly when no users have been added
+        to the database.
+        """
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"All Users", response.data)
