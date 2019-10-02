@@ -48,9 +48,6 @@ class UsersList(Resource):
                 response_object["message"] = \
                     "Sorry. That email already exists."
                 return response_object, 400
-        except exc.IntegrityError:
-            db.session.rollback()
-            return response_object, 400
         except (exc.IntegrityError, ValueError):
             db.session.rollback()
             return response_object, 400
