@@ -25,15 +25,21 @@ class UsersList(Resource):
 
     def post(self):
         post_data = request.get_json()
-        response_object = {"status": "fail", "message": "Invalid payload."}
+        response_object = {
+            "status": "fail",
+            "message": "Invalid payload."
+        }
         if not post_data:
             return response_object, 400
         username = post_data.get("username")
         email = post_data.get("email")
+        password = post_data.get("password")
         try:
             user = User.query.filter_by(email=email).first()
             if not user:
-                db.session.add(User(username=username, email=email))
+                db.session.add(User(
+                    username=username, email=email, password=password)
+                )
                 db.session.commit()
                 response_object["status"] = "success"
                 response_object["message"] = f"{email} was added!"
@@ -43,6 +49,9 @@ class UsersList(Resource):
                     "Sorry. That email already exists."
                 return response_object, 400
         except exc.IntegrityError:
+            db.session.rollback()
+            return response_object, 400
+        except (exc.IntegrityError, ValueError):
             db.session.rollback()
             return response_object, 400
 
@@ -70,15 +79,18 @@ class Users(Resource):
             return response_object, 404
 
 
-@users_blueprint.route("/", methods=["GET", "POST"])
+@users_blueprint.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":
-        username = request.form["username"]
-        email = request.form["email"]
-        db.session.add(User(username=username, email=email))
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        db.session.add(User(
+            username=username, email=email, password=password)  # new
+        )
         db.session.commit()
     users = User.query.all()
-    return render_template("index.html", users=users)
+    return render_template('index.html', users=users)
 
 
 api.add_resource(UsersPing, "/users/ping")
