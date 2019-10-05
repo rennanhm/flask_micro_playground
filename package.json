@@ -1,0 +1,6 @@
+{
+	"name": "test-playground",
+	"devDependencies": {
+		"cypress": "^3.2.0"
+	}
+}
