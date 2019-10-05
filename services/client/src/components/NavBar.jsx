@@ -10,7 +10,8 @@ const NavBar = (props) => (
                       onClick={() => {
                           let toggle = document.querySelector(".nav-toggle");
                           let menu2 = document.querySelector(".navbar-menu");
-                          toggle.classList.toggle("is-active"); menu2.classList.toggle("is-active");
+                          toggle.classList.toggle("is-active");
+                          menu2.classList.toggle("is-active");
                       }}>
                   <span></span>
                   <span></span>
@@ -25,8 +26,12 @@ const NavBar = (props) => (
                 </div>
                 <div className="navbar-end">
                     <Link to="/register" className="navbar-item">Register</Link>
+                    {!props.isAuthenticated &&
                     <Link to="/login" className="navbar-item">Log In</Link>
+                    }
+                    {props.isAuthenticated &&
                     <Link to="/logout" className="navbar-item">Log Out</Link>
+                    }
                 </div>
             </div>
         </section>
