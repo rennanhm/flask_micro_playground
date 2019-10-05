@@ -268,7 +268,7 @@ class TestUserService(BaseTestCase):
                     email='rennan@almeida.com'
                 )),
                 content_type='application/json',
-                headers = {'Authorization': f'Bearer {token}'}
+                headers={'Authorization': f'Bearer {token}'}
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 400)
@@ -334,6 +334,7 @@ class TestUserService(BaseTestCase):
             self.assertTrue(
                 data['message'] == 'You do not have permission to do that.')
             self.assertEqual(response.status_code, 401)
+
 
 if __name__ == "__main__":
     unittest.main()
