@@ -5,7 +5,7 @@ services:
     build:
       context: ./services/users
       dockerfile: Dockerfile-prod
-    ports:
+    expose:
       - 5000
     environment:
       - FLASK_ENV=production
@@ -20,7 +20,7 @@ services:
     build:
       context: ./services/users/project/db
       dockerfile: Dockerfile
-    ports:
+    expose:
       - 5432
     environment:
       - POSTGRES_USER=postgres
@@ -45,7 +45,18 @@ services:
       args:
         - NODE_ENV=production
         - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
-    ports:
-      - '3007:80'
+    expose:
+      - 80
+    depends_on:
+      - users
+
+  swagger:
+    build:
+      context: ./services/swagger
+      dockerfile: Dockerfile-prod
+    expose:
+      - 8080
+    environment:
+      - URL=swagger.json
     depends_on:
       - users
