@@ -29,3 +29,6 @@ before_script:
 
 script:
   - bash test.sh stage
+
+after_success:
+  - bash ./docker-push.sh
